@@ -1,4 +1,4 @@
-package com.sbb.sbb_mission.Question;
+package com.sbb.sbb_mission.question;
 
 import java.util.List;
 import java.util.Optional;

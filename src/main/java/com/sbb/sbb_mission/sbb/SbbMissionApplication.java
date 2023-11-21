@@ -1,4 +1,4 @@
-package com.sbb.sbb_mission;
+package com.sbb.sbb_mission.sbb;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

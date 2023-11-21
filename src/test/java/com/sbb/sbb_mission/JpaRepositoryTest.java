@@ -3,10 +3,10 @@ package com.sbb.sbb_mission;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.sbb.sbb_mission.Answer.Answer;
-import com.sbb.sbb_mission.Answer.AnswerRepository;
-import com.sbb.sbb_mission.Question.Question;
-import com.sbb.sbb_mission.Question.QuestionRepository;
+import com.sbb.sbb_mission.answer.Answer;
+import com.sbb.sbb_mission.answer.AnswerRepository;
+import com.sbb.sbb_mission.question.Question;
+import com.sbb.sbb_mission.question.QuestionRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;

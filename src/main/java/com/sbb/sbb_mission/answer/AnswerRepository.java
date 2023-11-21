@@ -1,4 +1,4 @@
-package com.sbb.sbb_mission.Answer;
+package com.sbb.sbb_mission.answer;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
