@@ -34,6 +34,13 @@ dependencies {
 
     // h2 DataBase
     runtimeOnly 'com.h2database:h2'
+
+    // Query DSL
+    implementation 'com.querydsl:querydsl-core'
+    implementation 'com.querydsl:querydsl-jpa'
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}"
+    annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+    annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
 }
 
 tasks.named('bootBuildImage') {
