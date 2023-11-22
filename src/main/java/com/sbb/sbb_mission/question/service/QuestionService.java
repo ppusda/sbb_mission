@@ -13,6 +13,11 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
 
     public List<Question> getQuestionList() {
+        addQuestion();
+        return questionRepository.findAll();
+    }
+
+    public void addQuestion() {
         Question question1 = Question.builder()
                 .subject("sbb가 무엇인가요?")
                 .content("sbb에 대해서 알고 싶습니다.")
@@ -27,9 +32,6 @@ public class QuestionService {
                 .build();
 
         this.questionRepository.save(question2);
-
-        return questionRepository.findAll();
     }
-
 
 }
