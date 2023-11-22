@@ -7,8 +7,8 @@
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<section class="text-red-500">
-	<i class="fa-solid fa-user"></i> 메인입니다.
+<section class="text-blue-400">
+	<h1>SBB 메인 페이지</h1>
 </section>
 
 <style>

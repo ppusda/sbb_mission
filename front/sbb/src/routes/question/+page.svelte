@@ -9,7 +9,6 @@
 	async function fetchData() {
 		const response = await fetch(`/sbb/question/list`);
 		datas = await response.json();
-		console.log(datas);
 	}
 
 	fetchData();

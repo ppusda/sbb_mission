@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MainContorller {
 
     @GetMapping("/")
-    @ResponseBody
-    public String main() {
-        return "Hello, SBB!";
+    public void main() {
     }
 
 }
