@@ -1,4 +1,4 @@
-package com.sbb.sbb_mission;
+package com.sbb.sbb_mission.sbb;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

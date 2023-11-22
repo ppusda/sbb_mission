@@ -1,12 +1,12 @@
-package com.sbb.sbb_mission;
+package com.sbb.sbb_mission.sbb;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.sbb.sbb_mission.answer.Answer;
-import com.sbb.sbb_mission.answer.AnswerRepository;
-import com.sbb.sbb_mission.question.Question;
-import com.sbb.sbb_mission.question.QuestionRepository;
+import com.sbb.sbb_mission.answer.entity.Answer;
+import com.sbb.sbb_mission.answer.repository.AnswerRepository;
+import com.sbb.sbb_mission.question.entity.Question;
+import com.sbb.sbb_mission.question.repository.QuestionRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package com.sbb.sbb_mission;
+package com.sbb.sbb_mission.sbb;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
