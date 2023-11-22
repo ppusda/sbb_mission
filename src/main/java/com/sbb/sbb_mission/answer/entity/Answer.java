@@ -1,6 +1,6 @@
-package com.sbb.sbb_mission.answer;
+package com.sbb.sbb_mission.answer.entity;
 
-import com.sbb.sbb_mission.question.Question;
+import com.sbb.sbb_mission.question.entity.Question;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

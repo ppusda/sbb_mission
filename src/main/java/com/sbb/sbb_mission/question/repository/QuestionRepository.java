@@ -1,5 +1,6 @@
-package com.sbb.sbb_mission.question;
+package com.sbb.sbb_mission.question.repository;
 
+import com.sbb.sbb_mission.question.entity.Question;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

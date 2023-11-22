@@ -1,6 +1,6 @@
-package com.sbb.sbb_mission.question;
+package com.sbb.sbb_mission.question.entity;
 
-import com.sbb.sbb_mission.answer.Answer;
+import com.sbb.sbb_mission.answer.entity.Answer;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
