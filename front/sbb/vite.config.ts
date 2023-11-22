@@ -5,5 +5,13 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
-	}
+	},
+	server: {
+		proxy: {
+			"/sbb/": {
+				target: "http://localhost:8080",
+				rewrite: (path) => path.replace(/^\/sbb/, ""),
+			},
+		},
+	},
 });
