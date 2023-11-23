@@ -1,5 +1,6 @@
 package com.sbb.sbb_mission.answer.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sbb.sbb_mission.question.entity.Question;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,8 +35,9 @@ public class Answer {
     @LastModifiedDate
     private LocalDate modifyDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name = "question_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Question question;
 
     @Builder

@@ -9,13 +9,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
 
-    public List<Question> getQuestionList() {
+    public QuestionService(QuestionRepository questionRepository) {
+        this.questionRepository = questionRepository;
         addQuestion();
+    }
+
+    public List<Question> getQuestionList() {
         return questionRepository.findAll();
     }
 

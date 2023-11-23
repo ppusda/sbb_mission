@@ -3,16 +3,28 @@
 
 	const questionId = $page.params['qid'];
 
-	// 리포지토리 목록을 저장할 상태
 	let datas = $state({});
+	let answerCount = $state({});
 
-	// 사용자 이름을 입력하고 '데이터 가져오기' 버튼을 누를 때 실행할 함수
 	async function fetchData() {
 		const response = await fetch(`/sbb/question/detail/${questionId}`);
 		datas = await response.json();
+
+		answerCount = datas.answerList.length;
 	}
 
 	fetchData();
+
+	async function handleSubmit(event) {
+		event.preventDefault();
+		const formData = new FormData(event.target);
+		await fetch(`/sbb/answer/write/${datas.id}`, {
+			method: 'POST',
+			body: formData,
+		});
+		window.location.href = `/question/detail/${datas.id}`;
+	}
+
 </script>
 
 <svelte:head>
@@ -23,6 +35,20 @@
 <section>
 	<h1 class="text-4xl">{datas.subject}</h1>
 	<p>{datas.content}</p>
+
+	<h5>{answerCount} 개의 답변이 있습니다.</h5>
+	<div>
+		<ul>
+			{#each datas.answerList as answer}
+				<li> {answer.content} </li>
+			{/each}
+		</ul>
+	</div>
+
+	<form on:submit={handleSubmit} method="post">
+		<textarea name="content" id="content" rows="15"></textarea>
+		<input type="submit" value="답변등록">
+	</form>
 
 </section>
 

@@ -1,5 +1,6 @@
 package com.sbb.sbb_mission.question.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sbb.sbb_mission.answer.entity.Answer;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
