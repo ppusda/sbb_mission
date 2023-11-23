@@ -3,6 +3,8 @@ package com.sbb.sbb_mission.question.service;
 import com.sbb.sbb_mission.question.entity.Question;
 import com.sbb.sbb_mission.question.repository.QuestionRepository;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,14 @@ public class QuestionService {
     public List<Question> getQuestionList() {
         addQuestion();
         return questionRepository.findAll();
+    }
+
+    public Question getQuestion(Long qid) {
+        Optional<Question> question = questionRepository.findById(qid);
+        if (question.isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        return question.get();
     }
 
     public void addQuestion() {

@@ -1,7 +1,4 @@
 <script>
-	// 사용자 입력을 위한 상태
-	let username = $state('');
-
 	// 리포지토리 목록을 저장할 상태
 	let datas = $state([]);
 
@@ -30,7 +27,7 @@
 		<tbody>
 		{#each datas as data}
 			<tr>
-				<td> {data.subject} </td>
+				<td> <a href={`/question/detail/${data.id}`} >{data.subject}</a> </td>
 				<td> {data.content} </td>
 			</tr>
 		{/each}

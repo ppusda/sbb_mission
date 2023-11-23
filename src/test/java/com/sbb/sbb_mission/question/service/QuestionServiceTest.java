@@ -23,11 +23,21 @@ class QuestionServiceTest {
     private QuestionRepository questionRepository;
 
     @Test
-    @DisplayName("Question List를 조회한다.")
+    @DisplayName("Question List를 반환한다.")
     void getQuestionList()  {
-        List<Question> questionList = questionService.getQuestionList();
+        questionService.addQuestion();
 
-        assertEquals(questionList, questionRepository.findAll());
+        List<Question> questionList = questionService.getQuestionList();
+        assertEquals(questionList.get(0).getId(), questionRepository.findAll().get(0).getId());
+    }
+
+    @Test
+    @DisplayName("Question을 하나를 반환한다.")
+    void getQuestion()  {
+        questionService.addQuestion();
+
+        Question question = questionService.getQuestion(1L);
+        assertEquals(question.getId(), questionRepository.findById(1L).get().getId());
     }
 
 }
