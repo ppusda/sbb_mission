@@ -46,8 +46,8 @@
 	</div>
 
 	<form on:submit={handleSubmit} method="post">
-		<textarea name="content" id="content" rows="15"></textarea>
-		<input type="submit" value="답변등록">
+		<textarea class="textarea textarea-primary mt-5" name="content" id="content" rows="10"></textarea>
+		<button type="submit" class="btn btn-primary" value="답변등록">답변 등록</button>
 	</form>
 
 </section>
