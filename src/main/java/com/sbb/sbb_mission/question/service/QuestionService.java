@@ -2,10 +2,10 @@ package com.sbb.sbb_mission.question.service;
 
 import com.sbb.sbb_mission.question.entity.Question;
 import com.sbb.sbb_mission.question.repository.QuestionRepository;
+import com.sbb.sbb_mission.question.request.QuestionRequest;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,7 +15,6 @@ public class QuestionService {
 
     public QuestionService(QuestionRepository questionRepository) {
         this.questionRepository = questionRepository;
-        addQuestion();
     }
 
     public List<Question> getQuestionList() {
@@ -28,6 +27,15 @@ public class QuestionService {
             throw new NoSuchElementException();
         }
         return question.get();
+    }
+
+    public void saveQuestion(QuestionRequest questionRequest) {
+        Question question = Question.builder()
+                .subject(questionRequest.subject())
+                .content(questionRequest.content())
+                .build();
+
+        this.questionRepository.save(question);
     }
 
     public void addQuestion() {

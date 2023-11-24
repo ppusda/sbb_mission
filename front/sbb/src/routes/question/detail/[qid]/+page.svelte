@@ -1,6 +1,7 @@
 <script>
 	import { page } from "$app/stores";
 	import {onMount} from "svelte";
+	import {toastWarning} from "../../../../app.js";
 
 	let questionId =  $state({});
 	let questionData = $state({});
@@ -29,9 +30,7 @@
 
 		if (answerCount >= 1) {
 			questionData.answerList.forEach(async (answer) => {
-				console.log(answer.createDate);
 				answer.createDate = formatDate(answer.createDate);
-				console.log(answer.createDate);
 			});
 		}
 	}
@@ -39,10 +38,19 @@
 	async function handleSubmit(event) {
 		event.preventDefault();
 		const formData = new FormData(event.target);
-		await fetch(`/sbb/answer/write/${questionId}`, {
+		const response = await fetch(`/sbb/answer/write/${questionId}`, {
 			method: 'POST',
 			body: formData,
 		});
+
+		if (!response.ok) {
+			const errorData = await response.json();
+			if (errorData.content) {
+				toastWarning(errorData.content);
+				return;
+			}
+		}
+
 		window.location.href = `/question/detail/${questionId}`;
 	}
 
