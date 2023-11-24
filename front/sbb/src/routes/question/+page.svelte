@@ -7,6 +7,8 @@
 			year: 'numeric',
 			month: '2-digit',
 			day: '2-digit',
+			hour: '2-digit',
+			minute: '2-digit',
 		});
 	}
 
@@ -29,9 +31,14 @@
 	<meta name="description" content="SBB Question List" />
 </svelte:head>
 
-<section>
-	<div class="container w-screen">
-		<h2 class="text-2xl font-bold border-bottom py-2 m-5"> 질문 게시판</h2>
+<section class="pl-10 pr-10">
+	<div class="flex flex-row items-center justify-between">
+		<div>
+			<h2 class="text-3xl font-bold border-bottom py-2 m-5">질문 게시판</h2>
+		</div>
+		<div>
+			<a class="btn btn-primary py-2 m-5" href="/question/write/">질문 등록</a>
+		</div>
 	</div>
 	<div class="overflow-x-auto m-5">
 		<table class="table">

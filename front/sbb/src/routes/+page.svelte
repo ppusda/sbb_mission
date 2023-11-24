@@ -10,8 +10,9 @@
 
 <section class="main-content">
 	<div class="flex flex-row justify-center h-full content-center">
-		<div class="flex flex-col text-blue-400 justify-center">
-			<h1 class="text-6xl">SBB Project</h1>
+		<div class="flex flex-col text-blue-400 justify-center content-center">
+			<h1 class="text-6xl text-center">SBB Project</h1>
+			<p class="mt-5 text-center">간단하게 질문과 답변을 주고받을 수 있는 사이트 입니다.</p>
 
 			<div class="flex justify-center">
 				<ul class="menu menu-horizontal bg-base-200 rounded-box mt-6">
