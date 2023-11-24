@@ -22,7 +22,6 @@ function parseMsg(msg) {
 
 export function toastWarning(msg) {
   const [_msg, ttl] = parseMsg(msg);
-
   if (ttl && parseInt(ttl) < new Date().getTime()) return;
 
   toastr["warning"](_msg, "경고");
@@ -30,7 +29,6 @@ export function toastWarning(msg) {
 
 export function toastNotice(msg) {
   const [_msg, ttl] = parseMsg(msg);
-
   if (ttl && parseInt(ttl) < new Date().getTime()) return;
 
   toastr["success"](_msg, "성공");
