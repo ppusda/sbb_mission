@@ -72,7 +72,12 @@
 			{#each questionListData as data}
 				<tr class="hover">
 					<td> {data.id}</td>
-					<td> <a href={`/question/detail/${data.id}`} >{data.subject}</a> </td>
+					<td>
+						<a href={`/question/detail/${data.id}`} >{data.subject}</a>
+						{#if data.answerList.length !== 0}
+							<span class="text-primary ml-1">{data.answerList.length}</span>
+						{/if}
+					</td>
 					<td> {data.createDate} </td>
 				</tr>
 			{/each}
