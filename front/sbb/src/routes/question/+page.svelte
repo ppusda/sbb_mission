@@ -12,6 +12,20 @@
 		fetchData();
 	}
 
+	const PrevPage = () => {
+		if (currentPage > 0) {
+			currentPage --;
+			fetchData();
+		}
+	}
+
+	const NextPage = () => {
+		if (currentPage < totalPages-1) {
+			currentPage ++;
+			fetchData();
+		}
+	}
+
 	function formatDate(datePhrase) {
 		const date = new Date(datePhrase);
 		return date.toLocaleDateString('ko-KR', {
@@ -85,7 +99,8 @@
 		</table>
 	</div>
 
-	<div class="join flex justify-center">
+	<div class="join flex justify-center mt-5">
+		<input class="join-item btn btn-square" value="이전" on:click={() => PrevPage()}/>
 		{#each Array(totalPages) as _, idx}
 			{#if idx <= 1 || idx >= totalPages - 2 || (idx >= currentPage - 1 && idx <= currentPage + 1)}
 				{#if currentPage === idx}
@@ -97,6 +112,7 @@
 				<button class="join-item btn btn-disabled">...</button>
 			{/if}
 		{/each}
+		<input class="join-item btn btn-square" value="다음" on:click={() => NextPage()}/>
 	</div>
 
 </section>
