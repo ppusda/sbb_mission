@@ -15,6 +15,6 @@
     <a class="btn btn-ghost text-xl" href="/">SBB project</a>
   </div>
   <div class="navbar-end">
-
+    <a class="btn btn-ghost" href="/">로그인</a>
   </div>
 </div>
