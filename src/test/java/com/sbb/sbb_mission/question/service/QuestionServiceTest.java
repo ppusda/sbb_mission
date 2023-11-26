@@ -14,6 +14,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 @SpringBootTest
 class QuestionServiceTest {
@@ -29,8 +30,8 @@ class QuestionServiceTest {
     void getQuestionList()  {
         questionService.addQuestion();
 
-        List<Question> questionList = questionService.getQuestionList();
-        assertEquals(questionList.get(0).getId(), questionRepository.findAll().get(0).getId());
+        Page<Question> questionPage = questionService.getQuestionList(1);
+        assertEquals(questionPage.toList().get(0).getId(), questionRepository.findAll().get(0).getId());
     }
 
     @Test

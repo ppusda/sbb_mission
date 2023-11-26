@@ -1,5 +1,16 @@
 <script>
+	import {onMount} from "svelte";
+
+	let currentPage = $state({});
+	let totalItems = $state({});
+	let totalPages = $state({});
 	let questionListData = $state([]);
+
+
+	const changePage = (page) => {
+		currentPage = page;
+		fetchData();
+	}
 
 	function formatDate(datePhrase) {
 		const date = new Date(datePhrase);
@@ -13,17 +24,25 @@
 	}
 
 	async function fetchData() {
-		const response = await fetch(`/sbb/question/list`);
-		questionListData = await response.json();
+		const response = await fetch(`/sbb/question/list?page=${currentPage}`);
+		const jsonResponse = await response.json();
+		if (jsonResponse) {
+			questionListData = jsonResponse.content;
+			totalItems = jsonResponse.totalElements;
+			totalPages = jsonResponse.totalPages;
 
-		if (questionListData) {
 			questionListData.forEach(async (question) => {
 				question.createDate = formatDate(question.createDate);
 			});
 		}
 	}
 
-	fetchData();
+
+	onMount(async () => {
+		currentPage = 0;
+		await fetchData();
+	});
+
 </script>
 
 <svelte:head>
@@ -60,6 +79,21 @@
 			</tbody>
 		</table>
 	</div>
+
+	<div class="join flex justify-center">
+		{#each Array(totalPages) as _, idx}
+			{#if idx <= 1 || idx >= totalPages - 2 || (idx >= currentPage - 1 && idx <= currentPage + 1)}
+				{#if currentPage === idx}
+					<input class="join-item btn btn-square" type="radio" name="options" aria-label="{idx+1}" checked/>
+				{:else}
+					<input class="join-item btn btn-square" type="radio" name="options" aria-label="{idx+1}" on:click={() => changePage(idx)}/>
+				{/if}
+			{:else if (idx === 2 && currentPage > 2) || (idx === totalPages - 3 && currentPage < totalPages - 3)}
+				<button class="join-item btn btn-disabled">...</button>
+			{/if}
+		{/each}
+	</div>
+
 </section>
 
 <style>
