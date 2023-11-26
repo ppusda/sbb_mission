@@ -2,9 +2,12 @@ package com.sbb.sbb_mission.question.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.sbb.sbb_mission.question.entity.Question;
+import com.sbb.sbb_mission.question.request.QuestionRequest;
 import com.sbb.sbb_mission.question.service.QuestionService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,6 +46,31 @@ class QuestionControllerTest {
         mockMvc.perform(get("/question/detail/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("Question을 등록한다.")
+    void saveQuestion() throws Exception {
+        mockMvc.perform(post("/question/write")
+                        .param("subject", "질문 제목")
+                        .param("content", "질문 내용"))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        Question question = questionService.getQuestion(1L);
+
+        assertEquals("질문 제목", question.getSubject());
+        assertEquals("질문 내용", question.getContent());
+    }
+
+    @Test
+    @DisplayName("Question 등록 시 제목을 입력하지 않으면 오류가 발생한다.")
+    void saveQuestionNoSubject() throws Exception {
+        mockMvc.perform(post("/question/write")
+                        .param("subject", "")
+                        .param("content", "질문 내용"))
+                .andExpect(status().is4xxClientError())
                 .andDo(print());
     }
 }

@@ -7,7 +7,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.sbb.sbb_mission.question.entity.Question;
 import com.sbb.sbb_mission.question.repository.QuestionRepository;
+import com.sbb.sbb_mission.question.request.QuestionRequest;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,22 @@ class QuestionServiceTest {
 
         Question question = questionService.getQuestion(1L);
         assertEquals(question.getId(), questionRepository.findById(1L).get().getId());
+    }
+
+    @Test
+    @DisplayName("Question을 저장한다..")
+    void saveQuestion()  {
+        QuestionRequest questionRequest = QuestionRequest.builder()
+                .subject("질문입니다.")
+                .content("내용입니다.")
+                .build();
+
+        questionService.saveQuestion(questionRequest);
+
+        Optional<Question> question = questionRepository.findById(1L);
+
+        assertEquals(questionRequest.subject(), question.get().getSubject());
+        assertEquals(questionRequest.content(), question.get().getContent());
     }
 
 }
