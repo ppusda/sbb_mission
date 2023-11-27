@@ -1,5 +1,6 @@
 <script>
-  import {toastWarning, toastNotice} from "../../../app.js";
+  import {toastWarning} from "../../../app.js";
+  import Cookies from 'js-cookie';
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -13,12 +14,25 @@
 
       if (!response.ok) {
         const errorData = await response.json();
-        if (errorData.subject) {
-          toastWarning(errorData.subject);
+        console.log(errorData);
+        if (errorData.username) {
+          toastWarning(errorData.username);
+          return;
+        }
+
+        if (errorData.password) {
+          toastWarning(errorData.password);
+          return;
+        }
+
+        if (errorData.exception) {
+          toastWarning(errorData.exception);
           return;
         }
       }
 
+      const data = await response.json();
+      Cookies.set("token", data.token);
       window.history.back();
     }
   }

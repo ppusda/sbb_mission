@@ -100,7 +100,9 @@
 	</div>
 
 	<div class="join flex justify-center mt-5">
-		<input class="join-item btn btn-square" value="이전" on:click={() => PrevPage()}/>
+		{#if totalPages !== 0}
+			<input class="join-item btn btn-square" value="이전" on:click={() => PrevPage()}/>
+		{/if}
 		{#each Array(totalPages) as _, idx}
 			{#if idx <= 1 || idx >= totalPages - 2 || (idx >= currentPage - 1 && idx <= currentPage + 1)}
 				{#if currentPage === idx}
@@ -112,7 +114,9 @@
 				<button class="join-item btn btn-disabled">...</button>
 			{/if}
 		{/each}
-		<input class="join-item btn btn-square" value="다음" on:click={() => NextPage()}/>
+		{#if totalPages !== 0}
+			<input class="join-item btn btn-square" value="다음" on:click={() => NextPage()}/>
+		{/if}
 	</div>
 
 </section>

@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 
 public record MemberRegisterRequest(
         @Size(min = 3, max = 25, message = "아이디는 3자 이상 25자 이하로 입력 해야합니다.")
-        @NotEmpty(message = "ID는 필수항목입니다.")
+        @NotEmpty(message = "아이디는 필수항목입니다.")
         String username,
         @NotEmpty(message = "비밀번호는 필수항목입니다.")
         String password,

@@ -9,7 +9,7 @@ import org.springframework.validation.Validator;
 
 @Component
 @RequiredArgsConstructor
-public class MemberValidator implements Validator {
+public class RegisterValidator implements Validator {
 
     private final static String MEMBER_ERROR_CODE = "memberServiceError";
     private final MemberService memberService;

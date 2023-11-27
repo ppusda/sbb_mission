@@ -15,10 +15,6 @@ public class ValidateUtil {
         return bindingResult.hasErrors();
     }
 
-    public void addErrors(String field, String message, BindingResult bindingResult) {
-        bindingResult.rejectValue(field, message);
-    }
-
     public ResponseEntity getErrors(BindingResult bindingResult) {
         List<FieldError> errors = bindingResult.getFieldErrors();
         Map<String, String> errorMap = new HashMap<>();
