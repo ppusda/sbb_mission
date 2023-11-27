@@ -1,6 +1,7 @@
 package com.sbb.sbb_mission.answer.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.sbb.sbb_mission.global.entity.BaseEntity;
 import com.sbb.sbb_mission.question.entity.Question;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,7 +24,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity @Getter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Answer {
+public class Answer extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,12 +32,6 @@ public class Answer {
 
     @Column(columnDefinition = "TEXT")
     private String content;
-
-    @CreatedDate
-    private LocalDateTime createDate;
-
-    @LastModifiedDate
-    private LocalDate modifyDate;
 
     @JsonBackReference
     @JoinColumn(name = "question_id")

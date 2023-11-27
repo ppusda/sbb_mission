@@ -1,5 +1,6 @@
 package com.sbb.sbb_mission.member.entity;
 
+import com.sbb.sbb_mission.global.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -16,7 +17,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity @Getter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,9 +30,6 @@ public class Member {
 
     @Column(unique = true)
     private String email;
-
-    @CreatedDate
-    private LocalDateTime createDate;
 
     @Builder
     public Member(String username, String password, String email) {
