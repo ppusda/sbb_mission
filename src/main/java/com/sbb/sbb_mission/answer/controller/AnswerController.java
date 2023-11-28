@@ -6,6 +6,7 @@ import com.sbb.sbb_mission.global.util.ValidateUtil;
 import com.sbb.sbb_mission.member.entity.Member;
 import com.sbb.sbb_mission.member.service.MemberService;
 import com.sbb.sbb_mission.question.entity.Question;
+import com.sbb.sbb_mission.question.request.QuestionRequest;
 import com.sbb.sbb_mission.question.service.QuestionService;
 import jakarta.validation.Valid;
 import java.security.Principal;
@@ -40,5 +41,17 @@ public class AnswerController {
         Member member = memberService.getMember(principal.getName());
         answerService.writeAnswer(question, answerRequest, member);
         return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping(value = "/modify/{id}")
+    public void writeAnswer(@Valid AnswerRequest answerRequest, @PathVariable("id") Long id, Principal principal) {
+        answerService.modifyAnswer(answerRequest, id, principal.getName());
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping(value = "/remove/{id}")
+    public void removeAnswer(@PathVariable("id") Long id, Principal principal) {
+        answerService.removeAnswer(id, principal.getName());
     }
 }

@@ -4,6 +4,7 @@ import com.sbb.sbb_mission.global.provider.JwtTokenProvider;
 import com.sbb.sbb_mission.global.util.ValidateUtil;
 import com.sbb.sbb_mission.member.request.MemberLoginRequest;
 import com.sbb.sbb_mission.member.request.MemberRegisterRequest;
+import com.sbb.sbb_mission.member.response.MemberCheckResponse;
 import com.sbb.sbb_mission.member.response.MemberResponse;
 import com.sbb.sbb_mission.member.service.MemberService;
 import com.sbb.sbb_mission.member.validator.LoginValidator;
@@ -58,19 +59,26 @@ public class MemberController {
     }
 
     @GetMapping("/check")
-    public boolean memberLoginCheck(HttpServletRequest request) {
+    public MemberCheckResponse memberLoginCheck(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
-            return false;
+            return MemberCheckResponse.builder()
+                    .result(false)
+                    .build();
         }
 
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("token")) {
-                return jwtTokenProvider.validateToken(cookie.getValue());
+                return MemberCheckResponse.builder()
+                        .username(jwtTokenProvider.getClaims(cookie.getValue()).getSubject())
+                        .result(jwtTokenProvider.validateToken(cookie.getValue()))
+                        .build();
             }
         }
 
-        return false;
+        return MemberCheckResponse.builder()
+                .result(false)
+                .build();
     }
 
     @PostMapping("/logout")

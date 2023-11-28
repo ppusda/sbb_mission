@@ -7,6 +7,9 @@
 	let totalPages = $state({});
 	let questionListData = $state([]);
 
+	let loginCheck = $state({});
+	let loginUsername = $state({});
+
 	const changePage = (page) => {
 		currentPage = page;
 		getQuestionList();
@@ -38,7 +41,7 @@
 	}
 
 	async function moveToWriteQuestionPage() {
-		const loginCheck = await memberCheck();
+		await memberCheck();
 		if (loginCheck) {
 			window.location.href = '/question/write';
 			return;
@@ -48,11 +51,11 @@
 
 	async function memberCheck() {
 		const response = await fetch(`/sbb/member/check`);
-		let loginCheck = false;
 		if (response) {
-			loginCheck = await response.json();
+			const data = await response.json();
+			loginCheck = data.result;
+			loginUsername = data.username;
 		}
-		return loginCheck;
 	}
 
 	async function getQuestionList() {

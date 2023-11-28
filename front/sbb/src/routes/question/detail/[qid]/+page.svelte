@@ -7,6 +7,9 @@
 	let questionData = $state({});
 	let answerCount = $state({});
 
+	let loginCheck = $state({});
+	let loginUsername = $state({});
+
 	function formatDate(datePhrase) {
 		const date = new Date(datePhrase);
 		return date.toLocaleDateString('ko-KR', {
@@ -20,14 +23,14 @@
 
 	async function memberCheck() {
 		const response = await fetch(`/sbb/member/check`);
-		let loginCheck = false;
 		if (response) {
-			loginCheck = await response.json();
+			const data = await response.json();
+			loginCheck = data.result;
+			loginUsername = data.username;
 		}
-		return loginCheck;
 	}
 
-	async function fetchData() {
+	async function getQuestion() {
 		const response = await fetch(`/sbb/question/detail/${questionId}`);
 		questionData = await response.json();
 
@@ -44,9 +47,65 @@
 		}
 	}
 
-	async function handleSubmit(event) {
+	async function moveToModifyQuestionPage() {
+		await memberCheck();
+		if (loginCheck) {
+			window.location.href = `/question/modify/${questionId}`;
+			return;
+		}
+		toastWarning("로그인이 필요합니다.");
+	}
+
+	async function removeQuestion() {
+		await memberCheck();
+		if (loginCheck) {
+			await fetch(`/sbb/question/remove/${questionId}`, {
+				method: 'POST',
+			});
+			window.location.href = `/question`;
+			return;
+		}
+		toastWarning("로그인이 필요합니다.");
+	}
+
+	async function removeAnswer(answerId) {
+		await memberCheck();
+		if (loginCheck) {
+			await fetch(`/sbb/answer/remove/${answerId}`, {
+				method: 'POST',
+			});
+			window.location.reload();
+			return;
+		}
+		toastWarning("로그인이 필요합니다.");
+	}
+
+	async function modifyHandleSubmit(event, answerId) {
 		event.preventDefault();
-		const loginCheck = await memberCheck();
+		await memberCheck();
+		if (loginCheck) {
+			const formData = new FormData(event.target);
+			const response = await fetch(`/sbb/answer/modify/${answerId}`, {
+				method: 'POST',
+				body: formData,
+			});
+			console.log(response);
+
+			if (!response.ok) {
+				const errorData = await response.json();
+				if (errorData.content) {
+					toastWarning(errorData.content);
+					return;
+				}
+			}
+			window.location.href=`/question/detail/${questionId}`;
+		}
+		toastWarning("로그인이 필요합니다.");
+	}
+
+	async function writeHandleSubmit(event) {
+		event.preventDefault();
+		await memberCheck();
 		if (loginCheck) {
 			const formData = new FormData(event.target);
 			const response = await fetch(`/sbb/answer/write/${questionId}`, {
@@ -68,7 +127,8 @@
 
 	onMount(async () => {
 		questionId = $page.params['qid'];
-		await fetchData();
+		await memberCheck();
+		await getQuestion();
 	});
 
 </script>
@@ -86,7 +146,15 @@
 				<div class="card-body flex flex-col">
 					<h2 class="card-title">{questionData.subject} </h2>
 					<p>{questionData.content}</p>
-					<div class="flex flex-row justify-end">
+					<div class="flex flex-row justify-between mt-5">
+						<div class="flex flex-row justify-start">
+							{#if questionData.author}
+								{#if loginUsername === questionData.author.username}
+									<a class="btn btn-ghost border-white mr-3" on:click={moveToModifyQuestionPage}>수정</a>
+									<a class="btn btn-ghost border-white" on:click={removeQuestion}>삭제</a>
+								{/if}
+							{/if}
+						</div>
 						<div class="flex flex-col">
 							<div class="flex flex-row justify-end">
 								<div class="badge badge-primary badge-outline mb-1.5">
@@ -111,7 +179,29 @@
 					<div class="card bg-base-100 shadow-xl border m-5 w-7/12">
 						<div class="card-body">
 							<p>{answer.content}</p>
-							<div class="flex flex-row justify-end">
+							<div class="flex flex-row justify-between mt-5">
+								<div class="flex flex-row justify-start">
+									{#if answer.author}
+										{#if loginUsername === answer.author.username}
+											<a href="#edit_modal" class="btn btn-ghost border-white mr-3">수정</a>
+											<div class="modal" role="dialog" id="edit_modal">
+												<div class="modal-box">
+													<h3 class="font-bold text-lg">답변 수정</h3>
+													<form class="w-full" on:submit|preventDefault={(event) => modifyHandleSubmit(event, answer.id)} method="post">
+														<div class="flex flex-row items-stretch">
+															<textarea class="textarea textarea-primary m-5 w-full resize-none" name="content" id="content" value="{answer.content}" rows="3"></textarea>
+															<button type="submit" class="btn btn-primary m-5 h-24">수정</button>
+														</div>
+													</form>
+													<div class="modal-action">
+														<a href="#" class="btn">닫기</a>
+													</div>
+												</div>
+											</div>
+											<a class="btn btn-ghost border-white" on:click|preventDefault={() => removeAnswer(answer.id)}>삭제</a>
+										{/if}
+									{/if}
+								</div>
 								<div class="flex flex-col">
 									<div class="flex flex-row justify-end">
 										<div class="badge badge-primary badge-outline mb-1.5">
@@ -133,7 +223,7 @@
 
 
 		<div class="flex content-center flex-wrap w-full">
-			<form class="w-full" on:submit={handleSubmit} method="post">
+			<form class="w-full" on:submit={writeHandleSubmit} method="post">
 				<div class="flex flex-row m-5 items-stretch">
 					<textarea class="textarea textarea-primary m-5 w-full resize-none" name="content" id="content" rows="3"></textarea>
 					<button type="submit" class="btn btn-primary m-5 h-24">답변 등록</button>

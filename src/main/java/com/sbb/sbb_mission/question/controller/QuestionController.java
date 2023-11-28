@@ -62,4 +62,17 @@ public class QuestionController {
         questionService.addQuestion();
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping(value = "/modify/{id}")
+    public void writeQuestion(@Valid QuestionRequest questionRequest, @PathVariable("id") Long id,
+            Principal principal) {
+
+        questionService.modifyQuestion(questionRequest, id, principal.getName());
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping(value = "/remove/{id}")
+    public void removeQuestion(@PathVariable("id") Long id, Principal principal) {
+        questionService.removeQuestion(id, principal.getName());
+    }
 }

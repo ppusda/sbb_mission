@@ -4,22 +4,23 @@ import com.sbb.sbb_mission.member.entity.Member;
 import com.sbb.sbb_mission.question.entity.Question;
 import com.sbb.sbb_mission.question.repository.QuestionRepository;
 import com.sbb.sbb_mission.question.request.QuestionRequest;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
+@RequiredArgsConstructor
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
-
-    public QuestionService(QuestionRepository questionRepository) {
-        this.questionRepository = questionRepository;
-    }
 
     public Page<Question> getQuestionList(int page) {
         Pageable pageable = PageRequest.of(page, 10);
@@ -34,6 +35,7 @@ public class QuestionService {
         return question.get();
     }
 
+    @Transactional
     public void saveQuestion(QuestionRequest questionRequest, Member member) {
         Question question = Question.builder()
                 .subject(questionRequest.subject())
@@ -42,6 +44,32 @@ public class QuestionService {
                 .build();
 
         this.questionRepository.save(question);
+    }
+
+    @Transactional
+    public void modifyQuestion(QuestionRequest questionRequest, Long id, String username) {
+        Question question = getQuestion(id);
+
+        if(!checkPrincipal(question, username)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
+        }
+
+        question.modifyQuestion(questionRequest.subject(), questionRequest.content());
+    }
+
+    @Transactional
+    public void removeQuestion(Long id, String username) {
+        Question question = getQuestion(id);
+
+        if(!checkPrincipal(question, username)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다.");
+        }
+
+        questionRepository.deleteById(id);
+    }
+
+    public boolean checkPrincipal(Question question, String username) {
+        return question.getAuthor().getUsername().equals(username);
     }
 
     public void addQuestion() {
@@ -54,5 +82,6 @@ public class QuestionService {
             this.questionRepository.save(question);
         }
     }
+
 
 }

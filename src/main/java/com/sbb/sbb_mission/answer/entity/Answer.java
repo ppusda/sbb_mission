@@ -45,8 +45,7 @@ public class Answer extends BaseEntity {
         this.author = author;
     }
 
-    public void modifyAnswer(String content, Question question) {
+    public void modifyAnswer(String content) {
         this.content = content;
-        this.question = question;
     }
 }

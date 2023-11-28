@@ -7,6 +7,7 @@ import com.sbb.sbb_mission.member.request.MemberLoginRequest;
 import com.sbb.sbb_mission.member.request.MemberRegisterRequest;
 import com.sbb.sbb_mission.member.response.MemberResponse;
 import com.sbb.sbb_mission.member.validator.MemberRole;
+import jakarta.transaction.Transactional;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +21,7 @@ public class MemberService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public void registerMember(MemberRegisterRequest memberRegisterRequest) {
         Member member = Member.builder()
                 .username(memberRegisterRequest.username())
