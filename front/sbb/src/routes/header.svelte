@@ -1,3 +1,30 @@
+<script>
+  import {toastNotice} from "../app.js";
+  import {onMount} from "svelte";
+  import Cookies from 'js-cookie';
+
+  let loginCheck = $state({});
+
+  async function fetchData() {
+    const response = await fetch(`/sbb/member/check`);
+    loginCheck = await response.json();
+  }
+
+  function logoutProcess() {
+    logout();
+    toastNotice("로그아웃 되었습니다.");
+  }
+  async function logout() {
+    Cookies.remove("token");
+    window.location.reload();
+    await fetch(`/sbb/member/logout`);
+  }
+
+  onMount(async () => {
+    await fetchData();
+  });
+</script>
+
 <div class="sticky top-0 h-16 bg-base-200 navbar bg-base-100 z-10">
   <div class="navbar-start">
     <div class="dropdown">
@@ -15,6 +42,12 @@
     <a class="btn btn-ghost text-xl" href="/">SBB project</a>
   </div>
   <div class="navbar-end">
-    <a class="btn btn-ghost" href="/member/login">로그인</a>
+    {#if !loginCheck}
+        <a class="btn btn-ghost" href="/member/login">로그인</a>
+      {:else}
+      <a class="btn btn-ghost" on:click={logoutProcess}>로그아웃</a>
+    {/if}
+
+
   </div>
 </div>

@@ -16,20 +16,23 @@
         console.log(errorData);
         if (errorData.username) {
           toastWarning(errorData.username);
+          return;
         }
         if (errorData.password) {
           toastWarning(errorData.password);
+          return;
         }
         if (errorData.passwordCheck) {
           toastWarning(errorData.passwordCheck);
+          return;
         }
         if (errorData.email) {
           toastWarning(errorData.email);
+          return;
         }
-        return;
       }
 
-      window.history.back();
+      window.location.href = `/member/login`;
     }
   }
 

@@ -1,16 +1,24 @@
 package com.sbb.sbb_mission.member.controller;
 
+import com.sbb.sbb_mission.global.provider.JwtTokenProvider;
 import com.sbb.sbb_mission.global.util.ValidateUtil;
 import com.sbb.sbb_mission.member.request.MemberLoginRequest;
 import com.sbb.sbb_mission.member.request.MemberRegisterRequest;
+import com.sbb.sbb_mission.member.response.MemberResponse;
 import com.sbb.sbb_mission.member.service.MemberService;
 import com.sbb.sbb_mission.member.validator.LoginValidator;
 import com.sbb.sbb_mission.member.validator.RegisterValidator;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -23,7 +31,7 @@ public class MemberController {
     private final ValidateUtil validateUtil;
     private final RegisterValidator registerValidator;
     private final LoginValidator loginValidator;
-
+    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/register")
     public ResponseEntity<?> memberRegister(@Valid MemberRegisterRequest memberRegisterRequest, BindingResult bindingResult) {
@@ -46,5 +54,27 @@ public class MemberController {
         }
 
         return ResponseEntity.ok(memberService.loginMember(memberLoginRequest));
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<Boolean> memberLoginCheck(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null) {
+            return ResponseEntity.ok(false);
+        }
+
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("token")) {
+                return ResponseEntity.ok(jwtTokenProvider.validateToken(cookie.getValue()));
+            }
+        }
+
+        return ResponseEntity.ok(false);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout() {
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.ok().build();
     }
 }

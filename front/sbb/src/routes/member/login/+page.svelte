@@ -33,7 +33,7 @@
 
       const data = await response.json();
       Cookies.set("token", data.token);
-      window.history.back();
+      window.location.href = `/`;
     }
   }
 

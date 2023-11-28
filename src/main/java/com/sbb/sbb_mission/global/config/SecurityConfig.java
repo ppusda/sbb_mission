@@ -38,6 +38,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(requests ->
                         requests.requestMatchers(mvc.pattern("/member/register")).permitAll()
                                 .requestMatchers(mvc.pattern("/member/login")).permitAll()
+                                .requestMatchers(mvc.pattern("/member/check")).permitAll()
                                 .requestMatchers(PathRequest.toH2Console()).permitAll()
                                 .anyRequest().authenticated()
                 )
