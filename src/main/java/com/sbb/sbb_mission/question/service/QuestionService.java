@@ -1,5 +1,6 @@
 package com.sbb.sbb_mission.question.service;
 
+import com.sbb.sbb_mission.member.entity.Member;
 import com.sbb.sbb_mission.question.entity.Question;
 import com.sbb.sbb_mission.question.repository.QuestionRepository;
 import com.sbb.sbb_mission.question.request.QuestionRequest;
@@ -33,10 +34,11 @@ public class QuestionService {
         return question.get();
     }
 
-    public void saveQuestion(QuestionRequest questionRequest) {
+    public void saveQuestion(QuestionRequest questionRequest, Member member) {
         Question question = Question.builder()
                 .subject(questionRequest.subject())
                 .content(questionRequest.content())
+                .author(member)
                 .build();
 
         this.questionRepository.save(question);

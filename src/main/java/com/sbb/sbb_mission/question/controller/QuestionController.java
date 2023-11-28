@@ -2,16 +2,20 @@ package com.sbb.sbb_mission.question.controller;
 
 import ch.qos.logback.core.model.Model;
 import com.sbb.sbb_mission.global.util.ValidateUtil;
+import com.sbb.sbb_mission.member.entity.Member;
+import com.sbb.sbb_mission.member.service.MemberService;
 import com.sbb.sbb_mission.question.entity.Question;
 import com.sbb.sbb_mission.question.request.QuestionRequest;
 import com.sbb.sbb_mission.question.service.QuestionService;
 import jakarta.validation.Valid;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class QuestionController {
 
     private final QuestionService questionService;
+    private final MemberService memberService;
     private final ValidateUtil validateUtil;
 
     @GetMapping("/list")
@@ -39,13 +44,16 @@ public class QuestionController {
         return questionService.getQuestion(qid);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/write")
-    public ResponseEntity<?> writeQuestion(@Valid QuestionRequest questionRequest, BindingResult bindingResult) {
+    public ResponseEntity<?> writeQuestion(@Valid QuestionRequest questionRequest,
+            BindingResult bindingResult, Principal principal) {
         if (validateUtil.hasErrors(bindingResult)) {
             return validateUtil.getErrors(bindingResult);
         }
 
-        questionService.saveQuestion(questionRequest);
+        Member member = memberService.getMember(principal.getName());
+        questionService.saveQuestion(questionRequest, member);
         return ResponseEntity.ok().build();
     }
 

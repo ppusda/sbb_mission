@@ -1,4 +1,5 @@
 <script>
+	import {toastWarning} from "../../app.js";
 	import {onMount} from "svelte";
 
 	let currentPage = $state({});
@@ -6,23 +7,22 @@
 	let totalPages = $state({});
 	let questionListData = $state([]);
 
-
 	const changePage = (page) => {
 		currentPage = page;
-		fetchData();
+		getQuestionList();
 	}
 
 	const PrevPage = () => {
 		if (currentPage > 0) {
 			currentPage --;
-			fetchData();
+			getQuestionList();
 		}
 	}
 
 	const NextPage = () => {
 		if (currentPage < totalPages-1) {
 			currentPage ++;
-			fetchData();
+			getQuestionList();
 		}
 	}
 
@@ -37,7 +37,25 @@
 		});
 	}
 
-	async function fetchData() {
+	async function moveToWriteQuestionPage() {
+		const loginCheck = await memberCheck();
+		if (loginCheck) {
+			window.location.href = '/question/write';
+			return;
+		}
+		toastWarning("로그인이 필요합니다.");
+	}
+
+	async function memberCheck() {
+		const response = await fetch(`/sbb/member/check`);
+		let loginCheck = false;
+		if (response) {
+			loginCheck = await response.json();
+		}
+		return loginCheck;
+	}
+
+	async function getQuestionList() {
 		const response = await fetch(`/sbb/question/list?page=${currentPage}`);
 		const jsonResponse = await response.json();
 		if (jsonResponse) {
@@ -54,7 +72,7 @@
 
 	onMount(async () => {
 		currentPage = 0;
-		await fetchData();
+		await getQuestionList();
 	});
 
 </script>
@@ -70,7 +88,7 @@
 			<h2 class="text-3xl font-bold border-bottom py-2 m-5">질문 게시판</h2>
 		</div>
 		<div>
-			<a class="btn btn-primary py-2 m-5" href="/question/write/">질문 등록</a>
+			<a class="btn btn-primary py-2 m-5" on:click={moveToWriteQuestionPage}>질문 등록</a>
 		</div>
 	</div>
 	<div class="overflow-x-auto m-5">

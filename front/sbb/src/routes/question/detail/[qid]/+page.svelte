@@ -18,6 +18,15 @@
 		});
 	}
 
+	async function memberCheck() {
+		const response = await fetch(`/sbb/member/check`);
+		let loginCheck = false;
+		if (response) {
+			loginCheck = await response.json();
+		}
+		return loginCheck;
+	}
+
 	async function fetchData() {
 		const response = await fetch(`/sbb/question/detail/${questionId}`);
 		questionData = await response.json();
@@ -37,21 +46,24 @@
 
 	async function handleSubmit(event) {
 		event.preventDefault();
-		const formData = new FormData(event.target);
-		const response = await fetch(`/sbb/answer/write/${questionId}`, {
-			method: 'POST',
-			body: formData,
-		});
+		const loginCheck = await memberCheck();
+		if (loginCheck) {
+			const formData = new FormData(event.target);
+			const response = await fetch(`/sbb/answer/write/${questionId}`, {
+				method: 'POST',
+				body: formData,
+			});
 
-		if (!response.ok) {
-			const errorData = await response.json();
-			if (errorData.content) {
-				toastWarning(errorData.content);
-				return;
+			if (!response.ok) {
+				const errorData = await response.json();
+				if (errorData.content) {
+					toastWarning(errorData.content);
+					return;
+				}
 			}
+			window.location.reload();
 		}
-
-		window.location.href = `/question/detail/${questionId}`;
+		toastWarning("로그인이 필요합니다.");
 	}
 
 	onMount(async () => {
@@ -85,18 +97,20 @@
 
 		<div class="flex flex-col content-end flex-wrap">
 			<h5 class="text-1xl m-5">{answerCount} 개의 답변이 있습니다.</h5>
-			{#each questionData.answerList as answer}
-				<div class="card bg-base-100 shadow-xl border m-5 w-7/12">
-					<div class="card-body">
-						<p>{answer.content}</p>
-						<div class="flex flex-row justify-end">
-							<div class="badge badge-primary badge-outline">
-								{answer.createDate}
+			{#if questionData && questionData.answerList}
+				{#each questionData.answerList as answer}
+					<div class="card bg-base-100 shadow-xl border m-5 w-7/12">
+						<div class="card-body">
+							<p>{answer.content}</p>
+							<div class="flex flex-row justify-end">
+								<div class="badge badge-primary badge-outline">
+									{answer.createDate}
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			{/each}
+				{/each}
+			{/if}
 		</div>
 
 

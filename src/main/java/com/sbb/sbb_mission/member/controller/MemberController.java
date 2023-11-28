@@ -21,8 +21,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")
 public class MemberController {
@@ -57,19 +58,19 @@ public class MemberController {
     }
 
     @GetMapping("/check")
-    public ResponseEntity<Boolean> memberLoginCheck(HttpServletRequest request) {
+    public boolean memberLoginCheck(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
-            return ResponseEntity.ok(false);
+            return false;
         }
 
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("token")) {
-                return ResponseEntity.ok(jwtTokenProvider.validateToken(cookie.getValue()));
+                return jwtTokenProvider.validateToken(cookie.getValue());
             }
         }
 
-        return ResponseEntity.ok(false);
+        return false;
     }
 
     @PostMapping("/logout")

@@ -21,10 +21,10 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(appConfig.getJwtKey());
     }
 
-    public String createToken(Long uid) {
+    public String createToken(String username) {
         Date now = new Date();
         return Jwts.builder()
-                .setSubject(String.valueOf(uid))
+                .setSubject(username)
                 .signWith(key)
                 .setExpiration(new Date(now.getTime() + (1000L * 60 * 30)))
                 .setIssuedAt(now)

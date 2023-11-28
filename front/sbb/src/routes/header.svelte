@@ -15,9 +15,9 @@
     toastNotice("로그아웃 되었습니다.");
   }
   async function logout() {
+    await fetch(`/sbb/member/logout`);
     Cookies.remove("token");
     window.location.reload();
-    await fetch(`/sbb/member/logout`);
   }
 
   onMount(async () => {

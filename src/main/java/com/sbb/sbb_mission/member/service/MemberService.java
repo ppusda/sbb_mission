@@ -20,27 +20,6 @@ public class MemberService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
-    public boolean existsByUsername(String username) {
-        Optional<Member> member = memberRepository.findByUsername(username);
-        return member.isPresent();
-    }
-
-    public boolean existsByEmail(String email) {
-        Optional<Member> member = memberRepository.findByEmail(email);
-        return member.isPresent();
-    }
-
-    public boolean checkAdmin(String username) {
-        return username.equals(MemberRole.ADMIN.getValue());
-    }
-
-    public boolean checkUser(String username, String password) {
-        Optional<Member> member = memberRepository.findByUsername(username);
-
-        return member.filter(value -> passwordEncoder.matches(password, value.getPassword()))
-                .isPresent();
-    }
-
     public void registerMember(MemberRegisterRequest memberRegisterRequest) {
         Member member = Member.builder()
                 .username(memberRegisterRequest.username())
@@ -64,8 +43,37 @@ public class MemberService {
         return MemberResponse.builder()
                 .username(member.getUsername())
                 .memberRole(memberRole)
-                .token(jwtTokenProvider.createToken(member.getId()))
+                .token(jwtTokenProvider.createToken(member.getUsername()))
                 .build();
+    }
+
+    public Member getMember(String username) {
+        Optional<Member> member = this.memberRepository.findByUsername(username);
+        if (member.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+        return member.get();
+    }
+
+    public boolean existsByUsername(String username) {
+        Optional<Member> member = memberRepository.findByUsername(username);
+        return member.isPresent();
+    }
+
+    public boolean existsByEmail(String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+        return member.isPresent();
+    }
+
+    public boolean checkAdmin(String username) {
+        return username.equals(MemberRole.ADMIN.getValue());
+    }
+
+    public boolean checkUser(String username, String password) {
+        Optional<Member> member = memberRepository.findByUsername(username);
+
+        return member.filter(value -> passwordEncoder.matches(password, value.getPassword()))
+                .isPresent();
     }
 
 }
