@@ -87,8 +87,17 @@
 					<h2 class="card-title">{questionData.subject} </h2>
 					<p>{questionData.content}</p>
 					<div class="flex flex-row justify-end">
-						<div class="badge badge-primary badge-outline">
-							{questionData.createDate}
+						<div class="flex flex-col">
+							<div class="flex flex-row justify-end">
+								<div class="badge badge-primary badge-outline mb-1.5">
+									{#if questionData.author}
+										{questionData.author.username}
+									{/if}
+								</div>
+							</div>
+							<div class="badge badge-primary badge-outline text-start">
+								{questionData.createDate}
+							</div>
 						</div>
 					</div>
 				</div>
@@ -103,8 +112,17 @@
 						<div class="card-body">
 							<p>{answer.content}</p>
 							<div class="flex flex-row justify-end">
-								<div class="badge badge-primary badge-outline">
-									{answer.createDate}
+								<div class="flex flex-col">
+									<div class="flex flex-row justify-end">
+										<div class="badge badge-primary badge-outline mb-1.5">
+											{#if answer.author}
+												{answer.author.username}
+											{/if}
+										</div>
+									</div>
+									<div class="badge badge-primary badge-outline text-start">
+										{answer.createDate}
+									</div>
 								</div>
 							</div>
 						</div>

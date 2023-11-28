@@ -97,19 +97,21 @@
 			<tr>
 				<th>번호</th>
 				<th>제목</th>
+				<th>작성자</th>
 				<th>작성 일시</th>
 			</tr>
 			</thead>
 			<tbody>
 			{#each questionListData as data}
 				<tr class="hover">
-					<td> {data.id}</td>
+					<td>{data.id}</td>
 					<td>
 						<a href={`/question/detail/${data.id}`} >{data.subject}</a>
 						{#if data.answerList.length !== 0}
 							<span class="text-primary ml-1">{data.answerList.length}</span>
 						{/if}
 					</td>
+					<td>{data.author.username}</td>
 					<td> {data.createDate} </td>
 				</tr>
 			{/each}
