@@ -72,7 +72,6 @@
 		}
 	}
 
-
 	onMount(async () => {
 		currentPage = 0;
 		await getQuestionList();

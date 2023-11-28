@@ -40,9 +40,14 @@
 			questionData.createDate = formatDate(questionData.createDate);
 		}
 
+		if (questionData.modifyDate) {
+			questionData.modifyDate = formatDate(questionData.modifyDate);
+		}
+
 		if (answerCount >= 1) {
 			questionData.answerList.forEach(async (answer) => {
 				answer.createDate = formatDate(answer.createDate);
+				answer.modifyDate = formatDate(answer.modifyDate);
 			});
 		}
 	}
@@ -163,8 +168,11 @@
 									{/if}
 								</div>
 							</div>
+							<div class="badge badge-primary badge-outline text-start mb-1.5">
+								작성일자: {questionData.createDate}
+							</div>
 							<div class="badge badge-primary badge-outline text-start">
-								{questionData.createDate}
+								수정일자: {questionData.modifyDate}
 							</div>
 						</div>
 					</div>
@@ -210,8 +218,11 @@
 											{/if}
 										</div>
 									</div>
+									<div class="badge badge-primary badge-outline text-start mb-1.5">
+										작성일자: {answer.createDate}
+									</div>
 									<div class="badge badge-primary badge-outline text-start">
-										{answer.createDate}
+										수정일자: {answer.modifyDate}
 									</div>
 								</div>
 							</div>
