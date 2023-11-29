@@ -185,7 +185,17 @@
 							{#if questionData.author}
 								{#if loginUsername === questionData.author.username}
 									<a class="btn btn-ghost border-white mr-3" on:click={moveToModifyQuestionPage}>수정</a>
-									<a class="btn btn-ghost border-white" on:click={removeQuestion}>삭제</a>
+									<a href="#remove_question_modal" class="btn btn-ghost border-white">삭제</a>
+									<div class="modal" role="dialog" id="remove_question_modal">
+										<div class="modal-box">
+											<h3 class="font-bold text-lg">질문 삭제</h3>
+											<span>정말로 삭제하시겠습니까?</span>
+											<div class="modal-action">
+												<a class="btn btn-error" on:click={removeQuestion}>삭제</a>
+												<a href="#" class="btn">닫기</a>
+											</div>
+										</div>
+									</div>
 								{/if}
 							{/if}
 						</div>
@@ -238,11 +248,21 @@
 														</div>
 													</form>
 													<div class="modal-action">
+														<a href="#" class="btn btn-info">닫기</a>
+													</div>
+												</div>
+											</div>
+											<a href="#remove_answer_modal" class="btn btn-ghost border-white">삭제</a>
+											<div class="modal" role="dialog" id="remove_answer_modal">
+												<div class="modal-box">
+													<h3 class="font-bold text-lg">답변 삭제</h3>
+													<span>정말로 삭제하시겠습니까?</span>
+													<div class="modal-action">
+														<a class="btn btn-error" on:click|preventDefault={() => removeAnswer(answer.id)}>삭제</a>
 														<a href="#" class="btn">닫기</a>
 													</div>
 												</div>
 											</div>
-											<a class="btn btn-ghost border-white" on:click|preventDefault={() => removeAnswer(answer.id)}>삭제</a>
 										{/if}
 									{/if}
 								</div>
@@ -274,7 +294,6 @@
 				{/each}
 			{/if}
 		</div>
-
 
 		<div class="flex content-center flex-wrap w-full">
 			<form class="w-full" on:submit={writeHandleSubmit} method="post">
