@@ -12,7 +12,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import java.util.Set;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,6 +39,9 @@ public class Answer extends BaseEntity {
 
     @ManyToOne
     private Member author;
+
+    @ManyToMany
+    Set<Member> voter;
 
     @Builder
     public Answer(String content, Question question, Member author) {

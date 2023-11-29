@@ -73,10 +73,34 @@
 		toastWarning("로그인이 필요합니다.");
 	}
 
+	async function voteQuestion() {
+		await memberCheck();
+		if (loginCheck) {
+			await fetch(`/sbb/question/vote/${questionId}`, {
+				method: 'POST',
+			});
+			window.location.reload();
+			return;
+		}
+		toastWarning("로그인이 필요합니다.");
+	}
+
 	async function removeAnswer(answerId) {
 		await memberCheck();
 		if (loginCheck) {
 			await fetch(`/sbb/answer/remove/${answerId}`, {
+				method: 'POST',
+			});
+			window.location.reload();
+			return;
+		}
+		toastWarning("로그인이 필요합니다.");
+	}
+
+	async function voteAnswer(answerId) {
+		await memberCheck();
+		if (loginCheck) {
+			await fetch(`/sbb/answer/vote/${answerId}`, {
 				method: 'POST',
 			});
 			window.location.reload();
@@ -153,6 +177,11 @@
 					<p>{questionData.content}</p>
 					<div class="flex flex-row justify-between mt-5">
 						<div class="flex flex-row justify-start">
+							{#if questionData.voter}
+								<a class="btn btn-ghost border-white mr-3" on:click={voteQuestion}>추천
+									<span class="badge badge-primary badge-outline">{questionData.voter.length}</span>
+								</a>
+							{/if}
 							{#if questionData.author}
 								{#if loginUsername === questionData.author.username}
 									<a class="btn btn-ghost border-white mr-3" on:click={moveToModifyQuestionPage}>수정</a>
@@ -168,11 +197,13 @@
 									{/if}
 								</div>
 							</div>
-							<div class="badge badge-primary badge-outline text-start mb-1.5">
-								작성일자: {questionData.createDate}
-							</div>
-							<div class="badge badge-primary badge-outline text-start">
-								수정일자: {questionData.modifyDate}
+							<div class="flex flex-row justify-end">
+								<div class="badge badge-primary badge-outline text-start mr-1.5">
+									작성일자: {questionData.createDate}
+								</div>
+								<div class="badge badge-primary badge-outline text-start">
+									수정일자: {questionData.modifyDate}
+								</div>
 							</div>
 						</div>
 					</div>
@@ -189,6 +220,11 @@
 							<p>{answer.content}</p>
 							<div class="flex flex-row justify-between mt-5">
 								<div class="flex flex-row justify-start">
+									{#if answer.voter}
+										<a class="btn btn-ghost border-white mr-3" on:click|preventDefault={() => voteAnswer(answer.id)}>추천
+											<span class="badge badge-primary badge-outline">{answer.voter.length}</span>
+										</a>
+									{/if}
 									{#if answer.author}
 										{#if loginUsername === answer.author.username}
 											<a href="#edit_modal" class="btn btn-ghost border-white mr-3">수정</a>
@@ -212,17 +248,24 @@
 								</div>
 								<div class="flex flex-col">
 									<div class="flex flex-row justify-end">
-										<div class="badge badge-primary badge-outline mb-1.5">
-											{#if answer.author}
-												{answer.author.username}
+										{#if answer.author}
+											{#if questionData.author.username === answer.author.username}
+												<div class="badge badge-info badge-outline mr-1.5 mb-1.5">
+													질문 작성자
+												</div>
 											{/if}
+											<div class="badge badge-primary badge-outline mb-1.5">
+												{answer.author.username}
+											</div>
+										{/if}
+									</div>
+									<div class="flex flex-row justify-end">
+										<div class="badge badge-primary badge-outline text-start mr-1.5">
+											작성일자: {answer.createDate}
 										</div>
-									</div>
-									<div class="badge badge-primary badge-outline text-start mb-1.5">
-										작성일자: {answer.createDate}
-									</div>
-									<div class="badge badge-primary badge-outline text-start">
-										수정일자: {answer.modifyDate}
+										<div class="badge badge-primary badge-outline text-start">
+											수정일자: {answer.modifyDate}
+										</div>
 									</div>
 								</div>
 							</div>

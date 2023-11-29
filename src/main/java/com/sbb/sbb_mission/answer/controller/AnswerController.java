@@ -1,5 +1,6 @@
 package com.sbb.sbb_mission.answer.controller;
 
+import com.sbb.sbb_mission.answer.entity.Answer;
 import com.sbb.sbb_mission.answer.request.AnswerRequest;
 import com.sbb.sbb_mission.answer.service.AnswerService;
 import com.sbb.sbb_mission.global.util.ValidateUtil;
@@ -53,5 +54,14 @@ public class AnswerController {
     @PostMapping(value = "/remove/{id}")
     public void removeAnswer(@PathVariable("id") Long id, Principal principal) {
         answerService.removeAnswer(id, principal.getName());
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/vote/{id}")
+    public void answerVote(Principal principal, @PathVariable("id") Long id) {
+        Answer answer = answerService.getAnswer(id);
+        Member siteUser = memberService.getMember(principal.getName());
+
+        answerService.vote(answer, siteUser);
     }
 }

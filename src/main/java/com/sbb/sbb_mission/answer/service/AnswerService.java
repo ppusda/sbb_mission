@@ -65,4 +65,17 @@ public class AnswerService {
         return answer.getAuthor().getUsername().equals(username);
     }
 
+    @Transactional
+    public void vote(Answer answer, Member member) {
+        if (answer.getVoter().contains(member)) {
+            answer.getVoter().remove(member);
+            answerRepository.save(answer);
+            return;
+        }
+
+        answer.getVoter().add(member);
+        answerRepository.save(answer);
+    }
+
+
 }

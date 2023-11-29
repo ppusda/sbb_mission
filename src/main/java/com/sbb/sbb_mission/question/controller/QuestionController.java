@@ -75,4 +75,13 @@ public class QuestionController {
     public void removeQuestion(@PathVariable("id") Long id, Principal principal) {
         questionService.removeQuestion(id, principal.getName());
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/vote/{id}")
+    public void questionVote(Principal principal, @PathVariable("id") Long id) {
+        Question question = questionService.getQuestion(id);
+        Member siteUser = memberService.getMember(principal.getName());
+
+        questionService.vote(question, siteUser);
+    }
 }

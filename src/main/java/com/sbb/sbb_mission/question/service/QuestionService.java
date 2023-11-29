@@ -72,6 +72,18 @@ public class QuestionService {
         return question.getAuthor().getUsername().equals(username);
     }
 
+    @Transactional
+    public void vote(Question question, Member member) {
+        if (question.getVoter().contains(member)) {
+            question.getVoter().remove(member);
+            questionRepository.save(question);
+            return;
+        }
+
+        question.getVoter().add(member);
+        questionRepository.save(question);
+    }
+
     public void addQuestion() {
         for(int i = 1; i <= 100; i++) {
             Question question = Question.builder()

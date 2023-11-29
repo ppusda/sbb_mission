@@ -47,13 +47,11 @@
     <a class="btn btn-ghost text-xl" href="/">SBB project</a>
   </div>
   <div class="navbar-end">
-    {#if !loginCheck}
-        <a class="btn btn-ghost" href="/member/login">로그인</a>
-    {:else}
+    {#if loginCheck}
       <span class="mr-3">{loginUsername} 님, 환영합니다!</span>
       <a class="btn btn-ghost" on:click={logoutProcess}>로그아웃</a>
+    {:else}
+      <a class="btn btn-ghost" href="/member/login">로그인</a>
     {/if}
-
-
   </div>
 </div>
