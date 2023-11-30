@@ -79,7 +79,7 @@
 			await fetch(`/sbb/question/vote/${questionId}`, {
 				method: 'POST',
 			});
-			window.location.reload();
+			await getQuestion();
 			return;
 		}
 		toastWarning("로그인이 필요합니다.");
@@ -91,7 +91,9 @@
 			await fetch(`/sbb/answer/remove/${answerId}`, {
 				method: 'POST',
 			});
-			window.location.reload();
+			location
+			await getQuestion();
+			window.location.hash = `#`;
 			return;
 		}
 		toastWarning("로그인이 필요합니다.");
@@ -103,7 +105,8 @@
 			await fetch(`/sbb/answer/vote/${answerId}`, {
 				method: 'POST',
 			});
-			window.location.reload();
+			await getQuestion();
+			window.location.hash=`#answer_${answerId}`
 			return;
 		}
 		toastWarning("로그인이 필요합니다.");
@@ -127,7 +130,9 @@
 					return;
 				}
 			}
-			window.location.href=`/question/detail/${questionId}`;
+			await getQuestion();
+			window.location.hash=`#answer_${answerId}`
+			return;
 		}
 		toastWarning("로그인이 필요합니다.");
 	}
@@ -149,7 +154,8 @@
 					return;
 				}
 			}
-			window.location.reload();
+			await getQuestion();
+			return;
 		}
 		toastWarning("로그인이 필요합니다.");
 	}
@@ -192,7 +198,7 @@
 											<span>정말로 삭제하시겠습니까?</span>
 											<div class="modal-action">
 												<a class="btn btn-error" on:click={removeQuestion}>삭제</a>
-												<a href="#" class="btn">닫기</a>
+												<a href="#" class="btn btn-ghost">닫기</a>
 											</div>
 										</div>
 									</div>
@@ -225,7 +231,7 @@
 			<h5 class="text-1xl m-5">{answerCount} 개의 답변이 있습니다.</h5>
 			{#if questionData && questionData.answerList}
 				{#each questionData.answerList as answer}
-					<div class="card bg-base-100 shadow-xl border m-5 w-7/12">
+					<div class="card bg-base-100 shadow-xl border m-5 w-7/12" id="answer_{answer.id}">
 						<div class="card-body">
 							<p>{answer.content}</p>
 							<div class="flex flex-row justify-between mt-5">
@@ -248,7 +254,7 @@
 														</div>
 													</form>
 													<div class="modal-action">
-														<a href="#" class="btn btn-info">닫기</a>
+														<a href="#" class="btn btn-ghost">닫기</a>
 													</div>
 												</div>
 											</div>
@@ -259,7 +265,7 @@
 													<span>정말로 삭제하시겠습니까?</span>
 													<div class="modal-action">
 														<a class="btn btn-error" on:click|preventDefault={() => removeAnswer(answer.id)}>삭제</a>
-														<a href="#" class="btn">닫기</a>
+														<a href="#" class="btn btn-ghost">닫기</a>
 													</div>
 												</div>
 											</div>
