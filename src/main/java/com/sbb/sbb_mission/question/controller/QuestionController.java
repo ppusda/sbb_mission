@@ -7,17 +7,14 @@ import com.sbb.sbb_mission.member.service.MemberService;
 import com.sbb.sbb_mission.question.entity.Question;
 import com.sbb.sbb_mission.question.request.QuestionRequest;
 import com.sbb.sbb_mission.question.service.QuestionService;
+
 import jakarta.validation.Valid;
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -84,4 +81,12 @@ public class QuestionController {
 
         questionService.vote(question, siteUser);
     }
+
+
+    @PostMapping("/search")
+    public Page<Question> list(@RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "keyword", defaultValue = "") String keyword) {
+        return this.questionService.searchQuestionList(page, keyword);
+    }
+
 }

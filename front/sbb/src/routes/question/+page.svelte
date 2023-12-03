@@ -3,6 +3,7 @@
 	import {onMount} from "svelte";
 
 	let currentPage = $state({});
+	let searchCurrentPage = $state({});
 	let totalItems = $state({});
 	let totalPages = $state({});
 	let questionListData = $state([]);
@@ -72,6 +73,35 @@
 		}
 	}
 
+	async function searchHandleSubmit(event) {
+		event.preventDefault();
+
+		const formData = new FormData(event.target);
+
+		if (formData.get("keyword") === '') {
+			await getQuestionList();
+			return;
+		}
+
+		currentPage = 0;
+		const response = await fetch(`/sbb/question/search?page=${currentPage}`, {
+			method: 'POST',
+			body: formData,
+		});
+
+		const jsonResponse = await response.json();
+		if (jsonResponse) {
+			questionListData = jsonResponse.content;
+			totalItems = jsonResponse.totalElements;
+			totalPages = jsonResponse.totalPages;
+
+			questionListData.forEach(async (question) => {
+				question.createDate = formatDate(question.createDate);
+			});
+		}
+
+	}
+
 	onMount(async () => {
 		currentPage = 0;
 		await getQuestionList();
@@ -89,7 +119,13 @@
 		<div>
 			<h2 class="text-3xl font-bold border-bottom py-2 m-5">질문 게시판</h2>
 		</div>
-		<div>
+		<div class="flex flex-row items-center">
+			<div class="flex flex-row input-group">
+				<form on:submit|preventDefault={(event) => searchHandleSubmit(event)} >
+					<input type="text" id="keyword" name="keyword" class="input input-bordered input-primary mr-3">
+					<button class="btn btn-outline-secondary" type="submit" id="btn_search">검색</button>
+				</form>
+			</div>
 			<a class="btn btn-primary py-2 m-5" on:click={moveToWriteQuestionPage}>질문 등록</a>
 		</div>
 	</div>
