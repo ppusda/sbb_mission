@@ -1,6 +1,5 @@
 package com.sbb.sbb_mission.question.controller;
 
-import ch.qos.logback.core.model.Model;
 import com.sbb.sbb_mission.global.util.ValidateUtil;
 import com.sbb.sbb_mission.member.entity.Member;
 import com.sbb.sbb_mission.member.service.MemberService;
@@ -52,11 +51,6 @@ public class QuestionController {
         Member member = memberService.getMember(principal.getName());
         questionService.saveQuestion(questionRequest, member);
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/addQuestion")
-    public void addQuestion() {
-        questionService.addQuestion();
     }
 
     @PreAuthorize("isAuthenticated()")

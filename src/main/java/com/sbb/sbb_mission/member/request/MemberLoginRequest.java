@@ -1,8 +1,6 @@
 package com.sbb.sbb_mission.member.request;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
 
 public record MemberLoginRequest(
 

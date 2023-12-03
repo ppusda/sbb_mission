@@ -5,7 +5,6 @@ import com.sbb.sbb_mission.answer.repository.AnswerRepository;
 import com.sbb.sbb_mission.answer.request.AnswerRequest;
 import com.sbb.sbb_mission.member.entity.Member;
 import com.sbb.sbb_mission.question.entity.Question;
-import com.sbb.sbb_mission.question.request.QuestionRequest;
 import jakarta.transaction.Transactional;
 import java.util.NoSuchElementException;
 import java.util.Optional;

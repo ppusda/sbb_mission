@@ -1,6 +1,5 @@
 package com.sbb.sbb_mission.global.config;
 
-import com.sbb.sbb_mission.global.provider.JwtTokenProvider;
 import com.sbb.sbb_mission.global.util.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;

@@ -5,6 +5,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.sbb.sbb_mission.member.entity.Member;
+import com.sbb.sbb_mission.member.repository.MemberRepository;
 import com.sbb.sbb_mission.question.entity.Question;
 import com.sbb.sbb_mission.question.repository.QuestionRepository;
 import com.sbb.sbb_mission.question.request.QuestionRequest;
@@ -24,6 +26,8 @@ class QuestionServiceTest {
 
     @Autowired
     private QuestionRepository questionRepository;
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Test
     @DisplayName("Question List를 반환한다.")
@@ -51,7 +55,9 @@ class QuestionServiceTest {
                 .content("내용입니다.")
                 .build();
 
-        questionService.saveQuestion(questionRequest);
+        Member member = memberRepository.findById(1L).get();
+
+        questionService.saveQuestion(questionRequest, member);
 
         Optional<Question> question = questionRepository.findById(1L);
 

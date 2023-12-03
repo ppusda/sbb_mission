@@ -7,7 +7,6 @@ import com.sbb.sbb_mission.global.util.ValidateUtil;
 import com.sbb.sbb_mission.member.entity.Member;
 import com.sbb.sbb_mission.member.service.MemberService;
 import com.sbb.sbb_mission.question.entity.Question;
-import com.sbb.sbb_mission.question.request.QuestionRequest;
 import com.sbb.sbb_mission.question.service.QuestionService;
 import jakarta.validation.Valid;
 import java.security.Principal;

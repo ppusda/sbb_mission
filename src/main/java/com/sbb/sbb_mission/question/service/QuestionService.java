@@ -1,29 +1,16 @@
 package com.sbb.sbb_mission.question.service;
 
-import static jakarta.persistence.criteria.JoinType.LEFT;
-
-import com.sbb.sbb_mission.answer.entity.Answer;
 import com.sbb.sbb_mission.member.entity.Member;
 import com.sbb.sbb_mission.question.entity.Question;
 import com.sbb.sbb_mission.question.repository.QuestionRepository;
-import com.sbb.sbb_mission.question.repository.QuestionRepositoryImpl;
 import com.sbb.sbb_mission.question.request.QuestionRequest;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -94,21 +81,6 @@ public class QuestionService {
 
         question.getVoter().add(member);
         questionRepository.save(question);
-    }
-
-    public void addQuestion() {
-        for(int i = 1; i <= 100; i++) {
-            Question question = Question.builder()
-                    .subject("sbb가 무엇인가요?" + i + "트")
-                    .content("sbb에 대해서 알고 싶습니다." + i + "트")
-                    .author(Member.builder()
-                            .username("user" + i)
-                            .password("user" + i)
-                            .email("user" + i + "@naver.com")
-                            .build()).build();
-
-            this.questionRepository.save(question);
-        }
     }
 
     public Page<Question> searchQuestionList(int page, String kw) {
