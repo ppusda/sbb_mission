@@ -45,7 +45,7 @@ public class AnswerController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/modify/{id}")
-    public void writeAnswer(@Valid AnswerRequest answerRequest, @PathVariable("id") Long id, Principal principal) {
+    public void modifyAnswer(@Valid AnswerRequest answerRequest, @PathVariable("id") Long id, Principal principal) {
         answerService.modifyAnswer(answerRequest, id, principal.getName());
     }
 

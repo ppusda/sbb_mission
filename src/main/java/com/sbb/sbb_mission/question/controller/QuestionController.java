@@ -55,7 +55,7 @@ public class QuestionController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/modify/{id}")
-    public void writeQuestion(@Valid QuestionRequest questionRequest, @PathVariable("id") Long id,
+    public void modifyQuestion(@Valid QuestionRequest questionRequest, @PathVariable("id") Long id,
             Principal principal) {
 
         questionService.modifyQuestion(questionRequest, id, principal.getName());
