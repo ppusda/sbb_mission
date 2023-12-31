@@ -8,6 +8,7 @@
 
 - Language : Javascript
 - Library & Framework : SvelteKit
+- Deploy : Vercel
 
 **Backend**
 
